@@ -3,6 +3,7 @@ const mongoose= require("mongoose")
 const app= express()
 const cors = require("cors")
 require("dotenv").config()
+const authRoutes=require("./routes/authRoutes")
 
 app.use(cors())
 app.use(express.json())
@@ -20,4 +21,5 @@ mongoose.connect(process.env.MONGODB_URL)
 app.get("/",(req,res)=>{
     res.json({message:"server is running"})
 })
+app.use("/api/auth",authRoutes)
 app.listen(5000,()=>console.log("server runns on port 5000"))
