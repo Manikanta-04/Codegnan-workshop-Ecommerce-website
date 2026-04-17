@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
-
+import {useNavigate} from 'react-router-dom'
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate=useNavigate()
   const role=localStorage.getItem("role")
   useEffect(() => {
     fetchProducts();
@@ -14,6 +15,7 @@ function Home() {
       const res = await API.get("/product");
       setProducts(res.data);
       console.log(res.data)
+      navigate("/cart")
     } catch (err) {
       console.log(err);
     } finally {
