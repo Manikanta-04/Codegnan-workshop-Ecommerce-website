@@ -1,37 +1,33 @@
-const express = require("express")
-const router = express.Router()
+const express= require("express")
+const router=express.Router() 
+const {protect,authorize}=require("../middleware/authMiddleware")
+const Product=require("../models/Product")
 
-const { protect, authorize } = require("../middleware/authMiddleware")
-const Product = require("../models/Product")
-
-// ADD PRODUCT
-router.post("/add", protect, authorize, async (req, res) => {
-    try {
-        const { name, price, image, description } = req.body
-
-        const newProduct = await Product.create({
-            name,
-            price,
-            image,
-            description
+router.post("/add",protect,authorize,async(req,res)=>{
+    try{
+        const {name,price,image,description}=req.body
+        const newProduct=await Product.create({
+            name,image,price,description
         })
-
-        return res.status(201).json({ message: "Product added successfully" })
-    } catch (err) {
-        console.log("error from add product", err)
-        return res.status(500).json({ message: "Error adding product" })
+        return res.status(201).json({message:"Product added successfully"})
+    }
+    catch(err){
+        console.log("error from add product",err)
+        return res.status(500).json({message:`error from add product ${err}`})
     }
 })
 
-// GET PRODUCTS
-router.get("/", async (req, res) => {
-    try {
-        const products = await Product.find()
-        return res.status(200).json({ products })
-    } catch (err) {
-        console.log("error from get product", err)
-        return res.status(500).json({ message: "Error fetching products" })
+router.get("/",async (req,res)=>{
+    try{
+        const products=await Product.find()
+        return res.status(200).json(products)
+    }
+    catch(err){
+         console.log("error from get product",err)
+        return res.status(500).json({message:`error from get product ${err}`})
     }
 })
 
-module.exports = router
+
+
+module.exports=router
